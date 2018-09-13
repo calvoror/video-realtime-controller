@@ -1,0 +1,7 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <input #input_video type="file" accept="video/*" (change)="attachVideoUrl(video, input_video)"><br/>
+  <video #video controls preload="auto" loop></video>
+</div>

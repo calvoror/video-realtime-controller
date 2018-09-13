@@ -1,0 +1,18 @@
+<div id="controls">
+  <button (click)="playVideos()">Play</button>
+  <button (click)="pauseVideos()">Pause</button>
+  <button (click)="rewindVideos()">Rewind</button>
+</div>
+
+<div>
+  <label>
+    <input #messageToSend>
+  </label>
+  <button (click)="sendMessage(messageToSend.value)">Send message</button>
+</div>
+
+<ul>
+  <li *ngFor="let msg of messages">
+    {{ msg }}
+  </li>
+</ul>
