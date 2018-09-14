@@ -1,18 +1,34 @@
-<div id="controls">
-  <button (click)="playVideos()">Play</button>
-  <button (click)="pauseVideos()">Pause</button>
-  <button (click)="rewindVideos()">Rewind</button>
-</div>
+<div id="main">
+  <div id="content">
+    <div id="controls">
+      <button (click)="playVideos()">Play</button>
+      <button (click)="pauseVideos()">Pause</button>
+      <button (click)="rewindVideos()">Rewind</button>
+    </div>
 
-<div>
-  <label>
-    <input #messageToSend>
-  </label>
-  <button (click)="sendMessage(messageToSend.value)">Send message</button>
-</div>
+    <div id="bottom_controls">
+      <label>
+        <input #messageToSend>
+      </label>
+      <button (click)="sendMessage(messageToSend.value)">Send message</button>
+    </div>
 
-<ul>
-  <li *ngFor="let msg of messages">
-    {{ msg }}
-  </li>
-</ul>
+    <ul>
+      <li *ngFor="let client of connected_clients">
+        {{ client }}
+      </li>
+    </ul>
+  </div>
+
+  <div id="bottom">
+    <div class="title_log">
+      <span>Message history</span>
+      <button (click)="messages=[]">clear history</button>
+    </div>
+    <ul class="message_log">
+      <li *ngFor="let msg of messages.reverse()">
+        {{ msg }}
+      </li>
+    </ul>
+  </div>
+</div>

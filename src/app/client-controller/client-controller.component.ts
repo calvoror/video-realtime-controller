@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ChatService} from '../chat-service';
 
 @Component({
@@ -8,13 +8,27 @@ import {ChatService} from '../chat-service';
 })
 export class ClientControllerComponent implements OnInit {
   messages: String[] = [];
+  connected_clients: String[] = [];
 
-  constructor(private chat: ChatService) {}
+  constructor(private chat: ChatService) {
+  }
 
   ngOnInit() {
+    this.chat.sendMsg('ADMIN_CONN');
+
     this.chat.messages.subscribe(msg => {
-      console.log(msg);
-      this.messages.push(msg.text);
+      switch (msg.type) {
+        case 'client-connection':
+          this.connected_clients.push(msg.text);
+          break;
+        case 'client-disconnection':
+          const id = this.connected_clients.indexOf(msg.text);
+          this.connected_clients.splice(id, 1);
+          break;
+        default:
+          this.messages.push(msg.text);
+          break;
+      }
     });
   }
 

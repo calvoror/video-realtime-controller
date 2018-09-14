@@ -20,7 +20,7 @@ export class WebsocketService {
     // from our socket.io server.
     const observable = new Rx.Observable(observer => {
       this.socket.on('message', (data) => {
-        console.log('Received message from Websocket Server');
+        // console.log('Received message from Websocket Server');
         observer.next(data);
       });
       return () => {

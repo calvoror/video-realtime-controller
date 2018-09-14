@@ -1,12 +1,46 @@
+#main {
+  display: flex;
+  flex-direction: column;
+  height: 97vh;
+  overflow: hidden;
+}
+
+#content {
+  flex: 1;
+}
+
 #controls {
   display: flex;
   height: 30vh;
-  margin-bottom: 20px;
 }
 
 #controls button {
   flex: 1;
-  margin: 20px;
-  font-size: 30px;
+  margin: 2vw;
+  font-size: 5vw;
   font-weight: bold;
+}
+
+/* BOTTOM */
+
+#bottom {
+  flex: 0;
+  height: 15vh;
+  border-top: black double;
+  padding: 10px;
+}
+
+#bottom .title_log {
+  height: 15%;
+}
+
+#bottom .message_log {
+  overflow: auto;
+  height: 80%;
+}
+
+#bottom .title_log button {
+  position: relative;
+  font-size: 12px;
+  float: right;
 }

@@ -8,16 +8,21 @@ import {ChatService} from '../chat-service';
 })
 export class ClientComponent implements OnInit {
   title = 'video-realtime-controller';
+  client_id;
   video: HTMLVideoElement;
 
   constructor(private chat: ChatService) {
   }
 
   ngOnInit() {
+    this.chat.sendMsg('CLIENT_CONN');
+
     this.chat.messages.subscribe(msg => {
-      console.log(msg);
+      if (msg.type === 'client-id') {
+        this.client_id = msg.text;
+      }
+
       if (this.video) {
-        console.log(msg.text);
         switch (msg.text) {
           case 'PLAY':
             this.video.play();
