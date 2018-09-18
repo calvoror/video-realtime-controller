@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ChatService} from '../chat-service';
+import {Utils} from '../utils';
 
 @Component({
   selector: 'app-client-controller',
@@ -7,23 +8,29 @@ import {ChatService} from '../chat-service';
   styleUrls: ['./client-controller.component.css']
 })
 export class ClientControllerComponent implements OnInit {
-  messages: String[] = [];
-  connected_clients: String[] = [];
+  utils = Utils;
+  messages: string[] = [];
+  // Associative table with client_id as key and video name as value
+  connected_clients: {[client_id: string]: string} = {};
 
   constructor(private chat: ChatService) {
   }
 
   ngOnInit() {
-    this.chat.sendMsg('ADMIN_CONN');
-
     this.chat.messages.subscribe(msg => {
       switch (msg.type) {
+        case 'identification':
+          this.connected_clients = {};
+          this.chat.send('ADMIN_CONN', 'ADMIN_CONN');
+          break;
         case 'client-connection':
-          this.connected_clients.push(msg.text);
+          this.connected_clients[msg.text] = '';
           break;
         case 'client-disconnection':
-          const id = this.connected_clients.indexOf(msg.text);
-          this.connected_clients.splice(id, 1);
+          delete this.connected_clients[msg.text];
+          break;
+        case 'client-video-selected':
+          this.connected_clients[msg.client] = msg.video;
           break;
         default:
           this.messages.push(msg.text);
@@ -33,18 +40,22 @@ export class ClientControllerComponent implements OnInit {
   }
 
   playVideos() {
-    this.sendMessage('PLAY');
+    this.sendMessage(Utils.MESSAGE_VALUE_PLAY);
   }
 
   pauseVideos() {
-    this.sendMessage('PAUSE');
+    this.sendMessage(Utils.MESSAGE_VALUE_PAUSE);
   }
 
   rewindVideos() {
-    this.sendMessage('REWIND');
+    this.sendMessage(Utils.MESSAGE_VALUE_REWIND);
   }
 
   sendMessage(msg: string = 'Client Message') {
     this.chat.sendMsg(msg);
+  }
+
+  getConnectedClients() {
+    return Object.keys(this.connected_clients);
   }
 }

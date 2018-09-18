@@ -9,28 +9,47 @@ io.on('connection', (socket) => {
   // Log whenever a user connects
   console.log('user connected');
 
+  socket.emit('message', {type: 'identification'});
+
   // Log whenever a client disconnects from our websocket server
   socket.on('disconnect', function () {
     console.log('user disconnected');
     // Delete client from array on disconnection
-    delete client_array[socket.id];
 
-    admin_array.forEach(
-      (admin) => {
-        admin.emit('message', {type: 'client-disconnection', text: socket.id});
-      }
-    );
+    if(client_array[socket.id])
+    {
+      delete client_array[socket.id];
+
+      admin_array.forEach(
+        (admin) => {
+          admin.emit('message', {type: 'client-disconnection', text: socket.id});
+        }
+      );
+    }
   });
 
   // When we receive a 'message' event from our client, print out
   // the contents of that message and then echo it back to our client
   // using `io.emit()`
   socket.on('message', (message) => {
-    switch (message) {
+    switch (message.type) {
+      case 'videourl':
+        admin_array.forEach(
+          (admin) => {
+            admin.emit('message', {type: 'client-video-selected', client: socket.id, video: message.text});
+          }
+        );
+        break;
       case 'ADMIN_CONN':
         console.log("Admin connected");
         socket.emit('message', {type: 'new-message', text: 'Hello Admin !'});
         admin_array.push(socket);
+
+        for (var client_id in client_array) {
+          if (client_array.hasOwnProperty(client_id)) {
+            socket.emit('message', {type: 'client-connection', text: client_id});
+          }
+        }
         break;
       case 'CLIENT_CONN':
         console.log("Client connected");
@@ -48,8 +67,8 @@ io.on('connection', (socket) => {
         break;
       default:
         // In all cases, we dispatch the received messages to everyone connected
-        console.log("Message Received: " + message);
-        io.emit('message', {type: 'new-message', text: message});
+        console.log("Message Received: " + message.text);
+        io.emit('message', {type: 'new-message', text: message.text});
         break;
     }
   });

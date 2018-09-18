@@ -21,6 +21,14 @@
   font-weight: bold;
 }
 
+.video_selected {
+  color: green;
+}
+
+.no_video {
+  color: red;
+}
+
 /* BOTTOM */
 
 #bottom {

@@ -32,7 +32,7 @@ export class WebsocketService {
     // from our other components and send messages back to our
     // socket server whenever the `next()` method is called.
     const observer = {
-      next: (data: string) => {
+      next: (data: {} = {type: '', text: ''}) => {
         this.socket.emit('message', data);
       },
     };

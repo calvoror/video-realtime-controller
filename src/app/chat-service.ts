@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {WebsocketService} from './web-socket-service';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 
 @Injectable()
 export class ChatService {
@@ -18,7 +18,11 @@ export class ChatService {
   // Our simplified interface for sending
   // messages back to our socket.io server
   sendMsg(msg) {
-    this.messages.next(msg);
+    this.messages.next({type: 'new-message', text: msg});
+  }
+
+  send(messageType: string, messageText: string) {
+    this.messages.next({type: messageType, text: messageText});
   }
 
 }

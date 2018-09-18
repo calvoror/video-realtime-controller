@@ -13,11 +13,16 @@
       <button (click)="sendMessage(messageToSend.value)">Send message</button>
     </div>
 
-    <ul>
-      <li *ngFor="let client of connected_clients">
-        {{ client }}
-      </li>
-    </ul>
+    <div id="connected_clients">
+      <h4>Clients connectés : ({{ getConnectedClients().length }})</h4>
+      <ul>
+        <li *ngFor="let client of getConnectedClients()">
+          {{ utils.getClientSimpleId(client) }} :
+          <span *ngIf="connected_clients[client] === ''" [ngClass]="'no_video'">No video</span>
+          <span *ngIf="connected_clients[client] !== ''" [ngClass]="'video_selected'">{{ connected_clients[client] }}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div id="bottom">
