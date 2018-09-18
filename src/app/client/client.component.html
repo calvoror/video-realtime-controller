@@ -1,7 +1,7 @@
 <div style="text-align:center">
   <p>
-    <i>Identifiant : </i><b>{{ utils.getClientSimpleId(client_id) }}</b>
+    <i>Identifiant : </i><span *ngIf="client_id" class="client_id" >{{ utils.getClientSimpleId(client_id) }}</span>
   </p>
   <input #input_video type="file" accept="video/*" (change)="attachVideoUrl(video, input_video)"><br/>
-  <video #video preload="auto" loop controls [muted]="true"></video>
+  <video #video preload="auto" loop controls [muted]="true" (click)="goFullScreen();"></video>
 </div>

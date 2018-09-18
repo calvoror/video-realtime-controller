@@ -16,8 +16,7 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
     // Delete client from array on disconnection
 
-    if(client_array[socket.id])
-    {
+    if (client_array[socket.id]) {
       delete client_array[socket.id];
 
       admin_array.forEach(
@@ -37,6 +36,20 @@ io.on('connection', (socket) => {
         admin_array.forEach(
           (admin) => {
             admin.emit('message', {type: 'client-video-selected', client: socket.id, video: message.text});
+          }
+        );
+        break;
+      case 'ping-client':
+        console.log('message received : ping client');
+
+        if (client_array[message.text]) {
+          client_array[message.text].emit('message', {type:'new-message', text: 'PLOP'});
+        }
+        break;
+      case 'client-state':
+        admin_array.forEach(
+          (admin) => {
+            admin.emit('message', {type: 'client-video-fullscreen', client: socket.id, state: message.text});
           }
         );
         break;

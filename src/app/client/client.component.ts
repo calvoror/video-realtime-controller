@@ -38,18 +38,61 @@ export class ClientComponent implements OnInit {
               case Utils.MESSAGE_VALUE_REWIND:
                 this.video.currentTime = 0;
                 break;
+              case 'PLOP':
+                console.log('PLOP');
+                document.body.setAttribute('style', 'background-color: orangered');
+                break;
             }
           }
           break;
       }
     });
+
+    document.onfullscreenchange = () => {
+      this.sendFullscreenMessage(document.fullscreenElement);
+    };
+    document.onwebkitfullscreenchange = () => {
+      this.sendFullscreenMessage(document.webkitFullscreenElement);
+    };
+    document.onmozfullscreenchange = () => {
+      this.sendFullscreenMessage(document.mozFullscreenElement);
+    };
+    document.onmsfullscreenchange = () => {
+      this.sendFullscreenMessage(document.msFullscreenElement);
+    };
   }
 
+  sendFullscreenMessage(fullscreenElement) {
+    if (fullscreenElement) {
+      this.chat.send('client-state', 'enter-fullscreen');
+    } else {
+      this.chat.send('client-state', 'exit-fullscreen');
+    }
+  }
+
+  /**
+   * Define video url of the video html element
+   * @param video
+   * @param input_video
+   */
   attachVideoUrl(video: HTMLVideoElement, input_video: HTMLInputElement) {
     const video_selected = input_video.files[0];
     const video_filename = video_selected.name;
     video.src = URL.createObjectURL(video_selected);
     this.video = video;
     this.chat.send('videourl', video_filename);
+  }
+
+  /**
+   * Request to go fullscreen
+   */
+  goFullScreen() {
+    if (this.video) {
+      if (this.video.webkitSupportsFullscreen) {
+        this.video.webkitRequestFullScreen();
+      } else {
+        this.video.requestFullscreen();
+      }
+    }
   }
 }
