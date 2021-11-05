@@ -1,6 +1,10 @@
 let app = require('express')();
 let http = require('http').Server(app);
-let io = require('socket.io')(http);
+let io = require('socket.io')(http, {
+  cors: {
+    origins: ['http://localhost:4200']
+  }
+});
 
 let admin_array = [];
 let client_array = {};

@@ -32,7 +32,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(
       appRoutes,
-      {enableTracing: true}
+      { enableTracing: true, relativeLinkResolution: 'legacy' }
     )
   ],
   providers: [ChatService, WebsocketService],
