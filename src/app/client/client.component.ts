@@ -51,15 +51,15 @@ export class ClientComponent implements OnInit {
     document.onfullscreenchange = () => {
       this.sendFullscreenMessage(document.fullscreenElement);
     };
-    document.onwebkitfullscreenchange = () => {
-      this.sendFullscreenMessage(document.webkitFullscreenElement);
-    };
-    document.onmozfullscreenchange = () => {
-      this.sendFullscreenMessage(document.mozFullscreenElement);
-    };
-    document.onmsfullscreenchange = () => {
-      this.sendFullscreenMessage(document.msFullscreenElement);
-    };
+    // document.onwebkitfullscreenchange = () => {
+    //   this.sendFullscreenMessage(document.webkitFullscreenElement);
+    // };
+    // document.onmozfullscreenchange = () => {
+    //   this.sendFullscreenMessage(document.mozFullscreenElement);
+    // };
+    // document.onmsfullscreenchange = () => {
+    //   this.sendFullscreenMessage(document.msFullscreenElement);
+    // };
   }
 
   sendFullscreenMessage(fullscreenElement) {
@@ -88,11 +88,12 @@ export class ClientComponent implements OnInit {
    */
   goFullScreen() {
     if (this.video) {
-      if (this.video.webkitSupportsFullscreen) {
-        this.video.webkitRequestFullScreen();
-      } else {
-        this.video.requestFullscreen();
-      }
+      this.video.requestFullscreen();
+      // if (this.video.webkitSupportsFullscreen) {
+      //   this.video.webkitRequestFullScreen();
+      // } else {
+      //   this.video.requestFullscreen();
+      // }
     }
   }
 }

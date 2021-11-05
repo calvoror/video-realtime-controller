@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "video-realtime-controller"
+  "defaultProject": "video-realtime-controller",
+  "cli": {
+    "analytics": "e65f93e3-f34b-47f2-8272-454ac0e5f3e5"
+  }
 }
