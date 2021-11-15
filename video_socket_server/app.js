@@ -2,9 +2,11 @@ let app = require('express')();
 let http = require('http').Server(app);
 let io = require('socket.io')(http, {
   cors: {
-    origins: ['http://localhost:4200']
+    origins: ['http://localhost:4200', 'http://localhost:8080', 'http://localhost']
   }
 });
+
+const SERVER_PORT = 9000
 
 let admin_array = [];
 let client_array = {};
@@ -92,7 +94,7 @@ io.on('connection', (socket) => {
 });
 
 
-// Initialize our websocket server on port 5000
-http.listen(5000, () => {
-  console.log('started on port 5000');
+// Initialize our websocket server on port $SERVER_PORT
+http.listen(SERVER_PORT, () => {
+  console.log('started on port '  + SERVER_PORT);
 });

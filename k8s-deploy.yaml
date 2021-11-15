@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vrc-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vrc-deployment
+  template:
+    metadata:
+      labels:
+        app : vrc-deployment
+    spec:
+      containers:
+        - name: vrc-container
+          image: berto/vrc:1.0.0 # dispo dans le registry local du Docker de Minikube
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 80
+     
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service-label-key: vrc-service-label 
+  name: vrc-service
+spec:
+  type: ClusterIP
+  selector:
+    app: vrc-deployment
+  ports:
+  - name: vrc-service-port
+    port: 80
+    protocol: TCP
+
+---
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   labels:
+#     service-label-key: vrc-service-label 
+#   name: vrc-loadbalancer
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: vrc-deployment
+#   ports:
+#   - name: vrc-service-port
+#     port: 80
+#     protocol: TCP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vrc-ingress
+spec:
+  rules:
+  - host: vrc.local
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: vrc-service
+            port:
+              number: 80
