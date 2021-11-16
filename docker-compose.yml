@@ -1,0 +1,14 @@
+version: "2"
+services:
+  vrc-socket-server:
+    build: ./video_socket_server
+    image: berto/vrc_socket_server:1.0.0
+    ports:
+      - "9000:9000"
+  vrc:
+    build: .
+    image: berto/vrc:1.0.0
+    environment:
+      VRC_WS_URL: localhost:9000
+    ports:
+      - "8080:80"

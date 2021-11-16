@@ -6,22 +6,48 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Docker commands
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Docker compose
 
-## Build
+Docker compose allows to deploy "Video Realtime Controller" and "VRC socket server" easily.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+If the images are not available, they are built and tagged locally. *(Build "vrc" image can take some time.)*
 
-## Running unit tests
+```bash
+docker-compose up -d
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Force rebuild of images if they already exist :
 
-## Further help
+```bash
+docker-compose build
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+docker-compose up --build
+```
+
+
+
+### Manual build and run images
+
+#### Video Realtime Controller
+
+```bash
+docker build -t berto/vrc:1.0.0 .
+```
+
+```bash
+dk run --name="VideoRealtimeController" --env VRC_WS_URL="localhost:9000" -d -p 8080:80 berto/vrc:1.0.0
+```
+
+#### Video Socket Server
+```bash
+docker build -t berto/vrc_socket_server:1.0.0 .
+```
+
+```bash
+dk run --name="VRC-socket-server" -d -p 9000:9000 berto/vrc_socket_server:1.0.0
+```
+
