@@ -8,7 +8,7 @@ export class ChatService {
   messages: Subject<any>;
 
   // Our constructor calls our wsService connect method
-  constructor(private wsService: WebsocketService) {
+  constructor(wsService: WebsocketService) {
     this.messages = <Subject<any>>wsService.connect();
     this.messages.lift((response: any): any => {
         return response;

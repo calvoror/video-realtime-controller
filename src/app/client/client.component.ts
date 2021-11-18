@@ -1,15 +1,35 @@
 import {Component, OnInit} from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition, keyframes
+} from '@angular/animations';
 import {ChatService} from '../chat-service';
 import {Utils} from '../utils';
 
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
-  styleUrls: ['./client.component.css']
+  styleUrls: ['./client.component.css'],
+  animations: [
+    trigger('clientPing', [
+      transition('* => *', [
+        animate(400, keyframes([
+          style({backgroundColor: 'red', offset: 0}),
+          style({backgroundColor: 'orangered',  offset: 0.3}),
+          style({backgroundColor: 'yellow',  offset: 0.6}),
+          style({backgroundColor: '',     offset: 1.0})
+        ]))
+      ])
+    ])
+  ]
 })
 export class ClientComponent implements OnInit {
   utils = Utils;
   client_id: string;
+  ping: number = 1;
   video: HTMLVideoElement;
 
   constructor(private chat: ChatService) {
@@ -38,12 +58,16 @@ export class ClientComponent implements OnInit {
               case Utils.MESSAGE_VALUE_REWIND:
                 this.video.currentTime = 0;
                 break;
-              case 'PLOP':
-                console.log('PLOP');
-                document.body.setAttribute('style', 'background-color: orangered');
-                break;
             }
           }
+
+          switch (msg.text) {
+            case Utils.PING_CLIENT:
+              console.log('Ping !');
+              this.ping += 1;
+              break;
+          }
+
           break;
       }
     });

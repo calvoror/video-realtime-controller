@@ -2,6 +2,7 @@ export class Utils {
   static MESSAGE_VALUE_PLAY = 'PLAY';
   static MESSAGE_VALUE_PAUSE = 'PAUSE';
   static MESSAGE_VALUE_REWIND = 'REWIND';
+  static PING_CLIENT = 'PING';
 
   /**
    * Returns a simplified identification number (3 first characters)

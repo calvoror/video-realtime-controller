@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         console.log('message received : ping client');
 
         if (client_array[message.text]) {
-          client_array[message.text].emit('message', {type:'new-message', text: 'PLOP'});
+          client_array[message.text].emit('message', {type:'new-message', text: 'PING'});
         }
         break;
       case 'client-state':

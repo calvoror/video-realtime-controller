@@ -1,4 +1,4 @@
-<div style="text-align:center">
+<div style="text-align:center" [@clientPing]="ping">
   <p>
     <i>Identifiant : </i><span *ngIf="client_id" class="client_id" >{{ utils.getClientSimpleId(client_id) }}</span>
   </p>
