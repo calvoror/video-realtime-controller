@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vrc-socket-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vrc-socket-server-deployment
+  template:
+    metadata:
+      labels:
+        app : vrc-socket-server-deployment
+    spec:
+      containers:
+        - name: vrc-socket-server-container
+          image: berto/vrc_socket_server:1.0.0 # dispo dans le registry local du Docker de Minikube
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 9000
+     
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service-label-key: vrc-socket-server-service-label 
+  name: vrc-socket-server-service
+spec:
+  type: ClusterIP
+  selector:
+    app: vrc-socket-server-deployment
+  ports:
+  - name: vrc-socket-server-service-port
+    port: 9000
+    protocol: TCP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vrc-socket-server-ingress
+spec:
+  rules:
+  - host: vrcsocketserver.local
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: vrc-socket-server-service
+            port:
+              number: 9000
